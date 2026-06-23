@@ -193,3 +193,10 @@ inline auto nameOwnerChanged(std::string_view s) noexcept
 using match_t = match::match;
 
 } // namespace sdbusplus::bus
+
+// Aliases to allow compatibility with upstream
+namespace sdbusplus
+{
+using match = bus::match::match;
+namespace match_rules = bus::match::rules;
+} // namespace sdbusplus
