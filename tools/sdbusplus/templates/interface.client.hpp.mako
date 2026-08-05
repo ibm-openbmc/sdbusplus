@@ -68,35 +68,8 @@ ${p.render(loader, "property.client.hpp.mako", property=p, interface=interface)}
     auto properties()
     {
         return proxy.template get_all_properties<PropertiesVariant>(context()) |
-               sdbusplus::async::execution::then([](auto&& v) {
-                   properties_t result;
-                   for (const auto& [property, value] : v)
-                   {
-                       std::visit(
-                           [&](auto v) {
-                               % for p in interface.properties:
-                               if (property == "${p.name}")
-                               {
-                                   if constexpr (std::is_same_v<
-                                                     std::decay_t<decltype(v)>,
-                                                     ${p.cppTypeParam(interface.name)}>)
-                                   {
-                                       result.${p.snake_case} = v;
-                                       return;
-                                   }
-                                   else
-                                   {
-                                       throw exception::UnpackPropertyError(
-                                           property,
-                                           UnpackErrorReason::wrongType);
-                                   }
-                               }
-                               % endfor
-                           },
-                           value);
-                   }
-                   return result;
-               });
+               sdbusplus::async::execution::then(
+                   [](auto&& v) { return properties_t::unpack(v); });
     }
     % endif
 

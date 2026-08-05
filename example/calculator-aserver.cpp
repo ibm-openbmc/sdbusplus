@@ -44,14 +44,14 @@ class Calculator :
     auto get_property(owner_t) const
     {
         std::cout << " get_property on owner\n";
-        return owner_;
+        return properties.owner;
     }
 
     bool set_property(owner_t, auto owner)
     {
         std::cout << " set_property on owner\n";
-        std::swap(owner_, owner);
-        return owner_ == owner;
+        std::swap(properties.owner, owner);
+        return properties.owner == owner;
     }
 };
 

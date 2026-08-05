@@ -61,9 +61,9 @@ class ${interface.classname} :
             [[maybe_unused]] ${interface.classname}::properties_t props)
         : ${interface.classname}(path)
     {
-        % for p in interface.properties:
-        ${p.snake_case}_ = props.${p.snake_case};
-        % endfor
+        % if interface.properties:
+        properties = props;
+        % endif
     }
 
     ${interface.classname}(
@@ -96,9 +96,9 @@ ${p.render(loader, "property.aserver.set.hpp.mako", property=p, interface=interf
 % endfor
 
   protected:
-% for p in interface.properties:
-    ${p.cppTypeParam(interface.name)} ${p.snake_case}_${p.default_value(interface.name)};
-% endfor
+% if interface.properties:
+    properties_t properties{};
+% endif
 
   private:
     /** @return the async context */
